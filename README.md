@@ -19,8 +19,8 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
 2. Sauce Credentials
     * In the terminal export your Sauce Labs Credentials as environmental variables:
     ```
-    $ export SAUCE_USERNAME=<your Sauce Labs username>
-	$ export SAUCE_ACCESS_KEY=<your Sauce Labs access key>
+    $ export KOBITON_USERNAME=<your Kobiton username>
+	$ export KOBITON_ACCESS_KEY=<your Kobiton access key>
     ```
 3. Project
 	* The recommended way to run your tests would be in [virtualenv](https://virtualenv.readthedocs.org/en/latest/). It will isolate the build from other setups you may have running and ensure that the tests run with the specified versions of the modules specified in the requirements.txt file.
@@ -35,7 +35,7 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
 ### Running Tests:  -n option designates number of parallel tests and -s to disable output capture.
 
 *  Tests in Parallel:
-    ```$ py.test -s -n 10 tests```
+    ```$ py.test -s tests```
 
 * Dump session ids for the SauceLabs CI plugins:
     ```$ cat $(find . -name "*.testlog")```

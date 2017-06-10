@@ -6,27 +6,27 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 
 browsers = [
-    {
-        "platform": "Windows 10",
-        "browserName": "MicrosoftEdge",
-        "version": "14.14393"
-    }, {
-        "platform": "Windows 10",
-        "browserName": "firefox",
-        "version": "49.0"
-    }, {
-        "platform": "Windows 7",
-        "browserName": "internet explorer",
-        "version": "11.0"
-    }, {
-        "platform": "OS X 10.11",
-        "browserName": "safari",
-        "version": "10.0"
-    }, {
-        "platform": "OS X 10.11",
-        "browserName": "chrome",
-        "version": "54.0"
-    }]
+  {
+    'sessionName': 'Android web',
+    'sessionDescription': 'This is an example for Android web testing',
+    'deviceOrientation':  'portrait',
+    'browserName':        'chrome',
+    'captureScreenshots': True,
+    'deviceGroup':        'KOBITON',
+    'deviceName':         'Galaxy S5',
+    'platformName':       'Android'
+  },
+  {
+    'sessionName': 'iOS web',
+    'sessionDescription': 'This is an example for iOS web testing',
+    'deviceOrientation':  'portrait',
+    'browserName':        'safari', 
+    'captureScreenshots': True,
+    'deviceGroup':        'KOBITON',
+    'deviceName':         'iPhone 7',
+    'platformName':       'iOS'
+}]
+
 
 def pytest_generate_tests(metafunc):
     if 'driver' in metafunc.fixturenames:
@@ -47,15 +47,10 @@ def driver(request, browser_config):
     desired_caps = dict()
     desired_caps.update(browser_config)
     test_name = request.node.name
-    build_tag = environ.get('BUILD_TAG', None)
-    tunnel_id = environ.get('TUNNEL_IDENTIFIER', None)
-    username = environ.get('SAUCE_USERNAME', None)
-    access_key = environ.get('SAUCE_ACCESS_KEY', None)
+    username = environ.get('KOBITON_USERNAME', None)
+    access_key = environ.get('KOBITON_ACCESS_KEY', None)
 
-    selenium_endpoint = "https://%s:%s@ondemand.saucelabs.com:443/wd/hub" % (username, access_key)
-    desired_caps['build'] = build_tag
-    # we can move this to the config load or not, also messing with this on a test to test basis is possible :)
-    desired_caps['tunnelIdentifier'] = tunnel_id
+    selenium_endpoint = "http://%s:%s@api.kobiton.com:80/wd/hub" % (username, access_key)
     desired_caps['name'] = test_name
 
     executor = RemoteConnection(selenium_endpoint, resolve_ip=False)
@@ -69,7 +64,7 @@ def driver(request, browser_config):
     # creates one file per test non ideal but xdist is awful
     if browser is not None:
         with open("%s.testlog" % browser.session_id, 'w') as f:
-            f.write("SauceOnDemandSessionID=%s job-name=%s\n" % (browser.session_id, test_name))
+            f.write("SessionID=%s job-name=%s\n" % (browser.session_id, test_name))
     else:
         raise WebDriverException("Never created!")
 
@@ -77,7 +72,6 @@ def driver(request, browser_config):
     # Teardown starts here
     # report results
     try:
-        browser.execute_script("sauce:job-result=%s" % str(not request.node.rep_call.failed).lower())
         browser.quit()
     except WebDriverException:
         # we can ignore the exceptions of WebDriverException type -> We're done with tests.

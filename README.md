@@ -17,7 +17,7 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
     * Install [pip](https://pip.pypa.io/en/stable/installing/) for package installation
 
 2. Sauce Credentials
-    * In the terminal export your Sauce Labs Credentials as environmental variables:
+    * In the terminal export your Kobiton Credentials as environmental variables:
     ```
     $ export KOBITON_USERNAME=<your Kobiton username>
 	$ export KOBITON_ACCESS_KEY=<your Kobiton access key>

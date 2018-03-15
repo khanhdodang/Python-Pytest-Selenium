@@ -50,7 +50,7 @@ def driver(request, browser_config):
     username = environ.get('KOBITON_USERNAME', None)
     access_key = environ.get('KOBITON_ACCESS_KEY', None)
 
-    selenium_endpoint = "http://%s:%s@api.kobiton.com:80/wd/hub" % (username, access_key)
+    selenium_endpoint = "https://%s:%s@api.kobiton.com/wd/hub" % (username, access_key)
     desired_caps['name'] = test_name
 
     executor = RemoteConnection(selenium_endpoint, resolve_ip=False)
